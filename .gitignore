@@ -2,3 +2,4 @@
 app/__pycache__
 #ignore any .pyc files from being committed
 *.pyc
+token.0
