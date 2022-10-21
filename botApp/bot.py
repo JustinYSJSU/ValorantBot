@@ -23,29 +23,7 @@ intents = discord.Intents.all()
 
 #setup the bot, the command prefix is !
 botObj = commands.Bot(command_prefix='!', intents = intents)
-
-#on_ready() is called when client 
-#is ready for further action 
-#essentially this is what happens when the bot connects 
-#it's an "event", as indicated by the client.event wrapper
-#an event is something that happens on Discord that you can
-#use to trigger a bot action
-@botObj.event
-async def on_ready():
- print(f'{botObj.user.name} has connected to Discord!') #successful connection
- #print all guilds the bot is in
- #uses discord.utills.get, which takes two parameters
- #where you serach, what you search for
- guild = discord.utils.get(botObj.guilds, name = GUILD)
- print(
-     f'{botObj.user.name} is connected to the following guild: \n'
-     f'{guild.name}(id: {guild.id})'
- 
- )
- 
- #get all members of the server using Discord API
- members = '\n - '.join([member.name for member in guild.members])
- print(f'Guild Members:\n - {members}')
+discord.Game("Type !help for commands")
 
 #Sends a link to the offical VALORANT website
 @botObj.command(name='valorant',brief = 'use !help valorant for more info', help='Link to the official VALORANT website')
@@ -53,7 +31,7 @@ async def valorant(ctx):
  url = "https://playvalorant.com/"
  await ctx.send(url)
 
-#dictionary of all agents (up to Harbor) and their corresponding uuid
+#dictionary of all agents (up to and including Harbor) and their corresponding uuid
 #for API data access
 agent_uuid_dict = {
  "astra": "41fb69c1-4189-7b37-f117-bcaf1e96f1bf", 
@@ -62,6 +40,7 @@ agent_uuid_dict = {
  "chamber": "22697a3d-45bf-8dd7-4fec-84a9e28c69d7", 
  "cypher": "117ed9e3-49f3-6512-3ccf-0cada7e3823b", 
  "fade": "dade69b4-4f5a-8528-247b-219e5a1facd6", 
+ "harbor": "95b78ed7-4637-86d9-7e41-71ba8c293152",
  "jett": "add6443a-41bd-e414-f6ad-e58d267f4e95", 
  "kay/o": "601dbbe7-43ce-be57-2a40-4abd24953621", 
  "killjoy": "1e58de9c-4950-5125-93e9-a0aee9f98746", 
@@ -77,10 +56,23 @@ agent_uuid_dict = {
  "yoru": "7f94d92c-4234-0a36-9646-3a87eb8b5c89",
  }
 
+
+#dictionary of all maps (up to and including Peral and their corresponding uuid
+map_uuid_dict = {
+"ascent": "7eaecc1b-4337-bbf6-6ab9-04b8f06b3319", 
+"bind": "2c9d57ec-4431-9c5e-2939-8f9ef6dd5cba", 
+"breeze": "2fb9a4fd-47b8-4e7d-a969-74b4046ebd53", 
+"fracture": "b529448b-4d60-346e-e89e-00a4c527a405", 
+"haven": "2bee0dc9-4ffe-519b-1cbd-7fbe763a6047", 
+"icebox": "e2ad5c54-4114-a870-9641-8ea21279579a", 
+"pearl": "fd267378-4d1d-484f-ff52-77821ed10dc2", 
+"split": "d960549e-485c-e861-8d71-aa9d1aed12a2", 
+}
+
 #Lists all agents in VALORANT
 @botObj.command(name = 'agents', brief = 'use !help agents for more info', help = 'Lists all playable agents in VALORANT')
 async def agents(ctx):
- agents = """```Here are all the currently playable agents in VALORANT \n  \nDUELIST: Phoenix, Jett, Yoru, Reyna, Raze, Neon \nINITIATOR: Breach, Fade, KAYO, Skye, Sova \nCONTROLLER: Astra, Brimstone, Omen, Viper \nSENTINEL: Chamber, Cypher, Killjoy, Sage \n \nFor more information on an agent, use the !agent <name> command```"""
+ agents = """```Here are all the currently playable agents in VALORANT \n  \nDUELIST: Phoenix, Jett, Yoru, Reyna, Raze, Neon \nINITIATOR: Breach, Fade, KAY/O, Skye, Sova \nCONTROLLER: Astra, Brimstone, Omen, Viper \nSENTINEL: Chamber, Cypher, Killjoy, Sage \n \nFor more information on an agent, use the !agent <name> command```"""
  await ctx.send(agents)
 
 
@@ -138,6 +130,36 @@ async def agent(ctx, agent: str):
     print("failed call")
  else:
   await ctx.send("Invalid agent name. Use !agents for a list of available agents")
+
+#lists all currently playable maps in VALORANT
+@botObj.command(name = 'maps', brief = "use !help maps for more info", help =  "Lists all currently playable maps in VALORANT")
+async def maps(ctx):
+ maps = """```Here are all the currently playable maps in VALORANT \n  \nAscent \nBind \nBreeze \nFracture \nHaven \nIcebox \nPearl \nSplit \n  \nUse the !map <name> command for more info on a specific map```"""
+ await ctx.send(maps)
+
+#gives specific information on a specific VALORANT map
+@botObj.command(name = 'map', brief = "use !help map for more info", help =  "Format: !map <name>. Lists map name, location, image")
+async def agent(ctx, map: str):
+ if map.lower() in map_uuid_dict.keys(): #valid agent name
+  uuid = map_uuid_dict[map.lower()] #get uuid
+  URL = f"https://valorant-api.com/v1/maps/{uuid}"
+  async with request("GET", URL) as response: #getting API data
+   if response.status == 200: #success
+    all_data = await response.json()
+    data = all_data["data"]
+    map_name = data["displayName"]
+    map_coordinates = data["coordinates"]
+    map_diagram = data["displayIcon"]
+    map_thumbnail = data["listViewIcon"]
+
+    embed = Embed(title = map_name + f" ({map_coordinates})")
+    embed.set_image(url = map_diagram)
+    embed.set_thumbnail(url = map_thumbnail)
+    await ctx.send(embed = embed)
+   else:
+    print("failed call")
+ else:
+  await ctx.send("Invalid map name. Use !maps for a list of available maps")
 
 #Here is how Discord handles errors 
 @botObj.event
