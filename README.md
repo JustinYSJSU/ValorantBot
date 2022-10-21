@@ -19,3 +19,6 @@ can provide users with a sufficient introductory experience to VALORANT.
 - Python
 - Discord API
 - VALROANT API (https://valorant-api.com/)
+
+# Credits
+- Justin Yamamoto (@JustinYSJSU)
