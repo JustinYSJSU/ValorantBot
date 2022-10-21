@@ -14,3 +14,8 @@ can provide users with a sufficient introductory experience to VALORANT.
 # Command Examples
 - !agent Phoenix will list information about Phoenix
 - !agent Jett will list information about Jett
+
+# Technologies
+- Python
+- Discord API
+- VALROANT API (https://valorant-api.com/)
