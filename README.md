@@ -1,5 +1,6 @@
 # ValorantBot
 A Discord bot that gives information about VALORANT, including agents, maps, and weapons. 
+
 Note: This is a personal project. The bot is not available for public use.
 
 # Goal
