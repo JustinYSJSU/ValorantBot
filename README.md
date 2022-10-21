@@ -9,4 +9,8 @@ can provide users with a sufficient introductory experience to VALORANT.
 # Commands
 - !valorant: Links to the official VALORANT website
 - !agents: Lists all currently playable agents in VALORANT (As of 10/2022)
-- !agent <<name>>: Lists information about the specified VALORANT agent (name, description, abilities, agent portrait)
+- !agent (name): Lists information about the specified VALORANT agent (name, description, abilities, agent portrait)
+
+# Command Examples
+- !agent Phoenix will list information about Phoenix
+- !agent Jett will list information about Jett
