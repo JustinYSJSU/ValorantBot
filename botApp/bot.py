@@ -101,19 +101,19 @@ async def agent(ctx, agent: str):
 
     #separating abilites: E ability, Q ability, C ability, Ulimate (X) ability
 
-    #E
+    
     agent_ability_one_name = agent_abilities[0]["displayName"] 
     agent_ability_one_description = agent_abilities[0]["description"]
 
-    #C
+    
     agent_ability_two_name = agent_abilities[1]["displayName"]
     agent_ability_two_description = agent_abilities[1]["description"]
 
-    #Q
+    
     agent_ability_three_name = agent_abilities[2]["displayName"]
     agent_ability_three_description = agent_abilities[2]["description"]
 
-    #Ultimate (X)
+    
     agent_ultimate_ability_name = agent_abilities[3]["displayName"]
     agent_ultimate_ability_description = agent_abilities[3]["description"]
 
