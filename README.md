@@ -13,10 +13,13 @@ can provide users with a sufficient introductory experience to VALORANT.
 - !agent (name): Lists information about the specified VALORANT agent (name, description, abilities, agent portrait)
 - !maps: Lists all currently playable maps in VALORANT (As of 10/2022)
 - !map (name): Lists information about the specified VALORANT map (name, coordinates, thunbnail, map image)
+- !weapons: Lists all currently useable weapons in VALORANT (As of 10/2022)
+- !weapon (name): Lists informaiton about the specified VALORANT weapon (name, magazine count, fire rate, cost, damage ranges)
 
 # Command Examples
 - !agent Phoenix will list information about Phoenix
-- !map Ascent will list informatino about Ascent
+- !map Ascent will list information about Ascent
+- !weapon Vandal will list information about the Vandal
 
 # Technologies
 - Python
