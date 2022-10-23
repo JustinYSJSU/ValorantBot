@@ -69,8 +69,9 @@ map_uuid_dict = {
 "split": "d960549e-485c-e861-8d71-aa9d1aed12a2", 
 }
 
+
 #dictionary of all weapons
-weapons_uuid_dict = {
+weapon_uuid__dict = {
 "classic": "29a0cfab-485b-f5d5-779a-b59f85e204a8", 
 "shorty": "42da8ccc-40d5-affc-beec-15aa47b42eda", 
 "frenzy": "44d4e95c-4157-0037-81b2-17841bf2e8e3", 
@@ -85,15 +86,13 @@ weapons_uuid_dict = {
 "phantom": "ee8e8d15-496b-07ac-e5f6-8fae5d4c7b1a", 
 "vandal": "9c82e19d-4575-0200-1a81-3eacf00cf872", 
 "marshal": "c4883e50-4494-202c-3ec3-6b8a9284f00b", 
-"operator": "a03b24d3-4319-996d-0f8c-94bbfba1dfc7", 
-"ares": "55d8a0f4-4274-ca67-fe2c-06ab45efdf58", 
-"odin": "63e6c2b6-4a8e-869c-3d4c-e38355226584", 
+"operator": "a03b24d3-4319-996d-0f8c-94bbfba1dfc7",
 }
 
 #Lists all agents in VALORANT
 @botObj.command(name = 'agents', brief = 'use !help agents for more info', help = 'Lists all playable agents in VALORANT')
 async def agents(ctx):
- agents = """```Here are all the currently playable agents in VALORANT \n  \nDUELIST: Phoenix, Jett, Yoru, Reyna, Raze, Neon \nINITIATOR: Breach, Fade, KAY/O, Skye, Sova \nCONTROLLER: Astra, Brimstone, Omen, Viper, Harbor \nSENTINEL: Chamber, Cypher, Killjoy, Sage \n \nFor more information on an agent, use the !agent <name> command \nEx: !agent Chamber```"""
+ agents = """```Here are all the currently playable agents in VALORANT \n  \nDUELIST: Phoenix, Jett, Yoru, Reyna, Raze, Neon \nINITIATOR: Breach, Fade, KAY/O, Skye, Sova \nCONTROLLER: Astra, Brimstone, Omen, Viper \nSENTINEL: Chamber, Cypher, Killjoy, Sage \n \nFor more information on an agent, use the !agent <name> command```"""
  await ctx.send(agents)
 
 
@@ -150,12 +149,12 @@ async def agent(ctx, agent: str):
    else:
     print("failed call")
  else:
-  await ctx.send("```Invalid agent name. Use !agents for a list of available agents```")
+  await ctx.send("Invalid agent name. Use !agents for a list of available agents")
 
 #lists all currently playable maps in VALORANT
 @botObj.command(name = 'maps', brief = "use !help maps for more info", help =  "Lists all currently playable maps in VALORANT")
 async def maps(ctx):
- maps = """```Here are all the currently playable maps in VALORANT \n  \nAscent \nBind \nBreeze \nFracture \nHaven \nIcebox \nPearl \nSplit \n  \nUse the !map <name> command for more info on a specific map \nEx:!map Ascent```"""
+ maps = """```Here are all the currently playable maps in VALORANT \n  \nAscent \nBind \nBreeze \nFracture \nHaven \nIcebox \nPearl \nSplit \n  \nUse the !map <name> command for more info on a specific map```"""
  await ctx.send(maps)
 
 #gives specific information on a specific VALORANT map
@@ -180,56 +179,13 @@ async def agent(ctx, map: str):
    else:
     print("failed call")
  else:
-  await ctx.send("```Invalid map name. Use !maps for a list of available maps```")
+  await ctx.send("Invalid map name. Use !maps for a list of available maps")
 
 #Lists all weapons in VALORANT
-@botObj.command(name = 'weapons', brief = 'use !help weapons for more info', help = 'Lists all weapons in VALORANT')
+@botObj.command(name = 'weapons', brief = "use !help weapons for more info", help = "Lists all weapons in VALORANT")
 async def weapons(ctx):
- weapons = """```Here are all the weapons in VALORANT \n  \nPISTOL: Classic, Shorty, Frenzy, Ghost, Sheriff \nSMG: Stinger, Spectre \nSHOTGUN: Bucky, Judge \nRIFLE: Bulldog, Guardian, Phantom, Vandal \nSNIPER RIFLE: Marshal, Operator \nHEAVY: Ares, Odin\n \nFor more information on a weapon, use the !weapon <name> command\nEx: !weapon Vandal```"""
- await ctx.send(weapons)
-
-#Get information on a specific weapon in VALORANT
-@botObj.command(name = 'weapon', brief = 'use !help weapon for more info', help = 'Lists information about specified weapon (Name, damage, price, image)')
-async def weapon(ctx, weapon: str):
- if weapon.lower() in weapons_uuid_dict.keys(): #valid agent name
-  uuid = weapons_uuid_dict[weapon.lower()] #get uuid
-  URL = f"https://valorant-api.com/v1/weapons/{uuid}"
-  async with request("GET", URL) as response: #getting API data
-   if response.status == 200: #success
-    all_data = await response.json()
-    data = all_data["data"]
-    weapon_name = data["displayName"]
-    weapon_image = data["displayIcon"]
-
-    weapon_shop_data = data["shopData"]
-    weapon_price = weapon_shop_data["cost"]
-
-    weapon_stats = data["weaponStats"]
-    fire_rate = weapon_stats["fireRate"]
-    magazine_count = weapon_stats["magazineSize"]
-
-    weapon_damage = weapon_stats["damageRanges"]
-
-    embed = Embed(title = weapon_name)
-    embed.set_image(url = weapon_image)
-    embed.add_field(name = "Cost", value = weapon_price, inline = True)
-    embed.add_field(name = "Fire Rate (rounds/sec)", value = fire_rate, inline = True)
-    embed.add_field(name = "Magazine Size", value = magazine_count, inline = True)
-
-    for range in weapon_damage:
-     start_range = range["rangeStartMeters"] 
-     end_range = range["rangeEndMeters"]
-     headshot = round(range["headDamage"])
-     bodyshot = round(range["bodyDamage"])
-     legshot = round(range["legDamage"])
-     embed.add_field(name = f"Damage range {start_range}m to {end_range}m", value = f"Headshot: {headshot} \nBodyshot: {bodyshot} \nLegshot: {legshot}", inline =  False)
-
-    await ctx.send(embed = embed)
-   else:
-    print("failed call")
- else:
-  await ctx.send("```Invalid map name. Use !maps for a list of available maps```")
-
+ weapons = agents = """```Here are all the weapons in VALORANT \n  \nPISTOL: Classic, Shorty, Frenzy, Ghost, Sheriff \nSMG: Stinger, Spectre \nRIFLE: Bulldog, Guardian, Phantom, Vandal\nSNIPER RIFLE: Marshal, Operator \nHEAVY: Ares, Odin```"""
+ 
 #Here is how Discord handles errors 
 @botObj.event
 async def on_error(event, *args, **kwargs):
