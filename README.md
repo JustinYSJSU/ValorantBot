@@ -1,6 +1,8 @@
 # ValorantBot
 A Discord bot that gives information about VALORANT, including agents, maps, and weapons. 
 
+Developed with Python and hosted online with Replit 
+
 Note: This is a personal project. The bot is not available for public use.
 
 # Goal
@@ -25,6 +27,7 @@ can provide users with a sufficient introductory experience to VALORANT.
 - Python
 - Discord API
 - VALROANT API (https://valorant-api.com/)
+- Replit
 
 # Credits
 - Justin Yamamoto (@JustinYSJSU)
