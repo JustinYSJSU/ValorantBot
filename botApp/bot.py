@@ -9,13 +9,15 @@ from dotenv import load_dotenv
 
 from aiohttp import request
 
+from webserver import keep_alive
+
 #allows your bot to actually function as a bot
 #bot is a subclass of Client
 from discord.ext import commands 
 from discord import Embed
 
 load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN') #get DISCORD_TOKEN from .env file
+#TOKEN = os.getenv('DISCORD_TOKEN') #get DISCORD_TOKEN from .env file
 GUILD = os.getenv('DISCORD_GUILD')
 
 intents = discord.Intents.all()
@@ -111,13 +113,14 @@ async def agent(ctx, agent: str):
     agent_name = data["displayName"]
     agent_description = data["description"]
     agent_role = data["role"]
-    agent_class = agent_role["displayName"]
 
     if agent.lower() == "sova":
      agent_image = "https://media.valorant-api.com/agents/320b2a48-4d9b-a075-30f1-1f93a9b638fa/fullportrait.png"
+     agent_class = "Initiator"
     else:
      agent_image = data["fullPortrait"]
-
+     agent_class = agent_role["displayName"]
+      
     agent_abilities = data["abilities"]
 
     #separating abilites: E ability, Q ability, C ability, Ulimate (X) ability
@@ -239,4 +242,6 @@ async def on_error(event, *args, **kwargs):
   else:
    raise
 
+keep_alive()
+TOKEN = os.environ.get("DISCORD_BOT_SECRET")
 botObj.run(TOKEN)
