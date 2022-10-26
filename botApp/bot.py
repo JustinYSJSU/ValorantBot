@@ -231,7 +231,7 @@ async def weapon(ctx, weapon: str):
    else:
     print("failed call")
  else:
-  await ctx.send("```Invalid weapon name. Use !maps for a list of available weapons```")
+  await ctx.send("```Invalid weapon name. Use !weapons for a list of available weapons```")
 
 #Here is how Discord handles errors 
 @botObj.event
