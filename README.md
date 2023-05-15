@@ -11,11 +11,11 @@ can provide users with a sufficient introductory experience to VALORANT.
 
 # Commands
 - !valorant: Links to the official VALORANT website
-- !agents: Lists all currently playable agents in VALORANT (As of 10/2022)
+- !agents: Lists all currently playable agents in VALORANT (As of 5/2023)
 - !agent (name): Lists information about the specified VALORANT agent (name, description, abilities, agent portrait)
-- !maps: Lists all currently playable maps in VALORANT (As of 10/2022)
+- !maps: Lists all currently playable maps in VALORANT (As of 5/2023)
 - !map (name): Lists information about the specified VALORANT map (name, coordinates, thunbnail, map image)
-- !weapons: Lists all currently useable weapons in VALORANT (As of 10/2022)
+- !weapons: Lists all currently useable weapons in VALORANT (As of 5/2023)
 - !weapon (name): Lists informaiton about the specified VALORANT weapon (name, magazine count, fire rate, cost, damage ranges)
 
 # Command Examples
