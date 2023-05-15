@@ -3,7 +3,7 @@ A Discord bot that gives information about VALORANT, including agents, maps, and
 
 Developed with Python and hosted online with Replit 
 
-Note: This is a personal project. The bot is not available for public use.
+Want to add this bot to your server? [Click here](https://discord.com/api/oauth2/authorize?client_id=1026641128004517959&permissions=8&scope=bot)
 
 # Goal
 The goal of this project was to learn how to use a more complex API and create a bot that 
