@@ -21,13 +21,18 @@ can provide users with easy access to userful VALORANT information.
 - !rank (region) (name) (tag): Lists current and peak ranking of the specified player. If the name is more than one word, seperate each with with a "_" 
 - !history (region) (name) (tag): Lists the 5 most recent matches and stats of the specified palyer. If the name is more than one word, seperate each with with a "_" 
 
-# Command Examples
+# Command Examples (Text)
 - !agent Phoenix will list information about Phoenix
 - !map Ascent will list information about Ascent
 - !weapon Vandal will list information about the Vandal
 - !player kigeki 3445 will list kigeki's information 
 - !rank na kigeki 3445 will list kigeki's rank history 
 - !history na SEN_tarik 1337 will list tarik's 5 most recent matches 
+
+# Command Examples (Images) 
+![Inkedplayer](https://github.com/JustinYSJSU/ValorantBot/assets/99459474/580cfe79-bb83-423e-a895-f7d092649dac)
+![Inkedrank](https://github.com/JustinYSJSU/ValorantBot/assets/99459474/c2297b2b-0056-4679-81ff-e70b44d33a5a)
+![Inkedhistory](https://github.com/JustinYSJSU/ValorantBot/assets/99459474/000d11d6-fa41-420c-ae1c-fa276325b671)
 
 # Technologies
 - Python
