@@ -165,7 +165,7 @@ async def maps(ctx):
 
 #gives specific information on a specific VALORANT map
 @botObj.command(name = 'map', brief = "use !help map for more info", help =  "Format: !map <name>. Lists map name, location, image")
-async def agent(ctx, map: str):
+async def map(ctx, map: str):
  if map.lower() in map_uuid_dict.keys(): #valid agent name
   uuid = map_uuid_dict[map.lower()] #get uuid
   URL = f"https://valorant-api.com/v1/maps/{uuid}"
@@ -236,7 +236,7 @@ async def weapon(ctx, weapon: str):
   await ctx.send("```Invalid weapon name. Use !weapons for a list of available weapons```")
 
 #Get rank information about specified VALORANT player
-@botObj.command(name = 'rank', brief = 'use !help rank for more info', help = 'Lists rank information about player. Format: !rank <region> <name> <tag>')
+@botObj.command(name = 'rank', brief = 'use !help rank for more info', help = 'Lists rank information about player. If the name is multiple words, separate each word with a "_". Available regions: na, eu, ap, kr Format: !rank <region> <name> <tag>')
 async def rank(ctx, region: str, name: str, tag: str):
  URL = f"https://api.henrikdev.xyz/valorant/v2/mmr/{region}/{name}/{tag}"
 
@@ -286,7 +286,7 @@ async def player(ctx, name: str, tag: str):
    await ctx.send("```Invalid player name. Remember caps matter; use !help player for more info```")
 
 #Get the 5 most recent matches of a specified player
-@botObj.command(name = 'history', brief = 'use !help history for more info', help = 'Lists the 5 most recent matches for this player. Format: !history <region> <name> <tag>.')
+@botObj.command(name = 'history', brief = 'use !help history for more info', help = 'Lists the 5 most recent matches for this player. If the name is multiple words, separate each word with a "_". Available regions: na, eu, ap, kr. Format: !history <region> <name> <tag>.')
 async def history(ctx, region: str, name: str, tag: str):
  URL = f"https://api.henrikdev.xyz/valorant/v3/matches/{region}/{name}/{tag}"
  async with request("GET", URL) as response:
