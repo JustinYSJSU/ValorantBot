@@ -235,6 +235,125 @@ async def weapon(ctx, weapon: str):
  else:
   await ctx.send("```Invalid weapon name. Use !weapons for a list of available weapons```")
 
+#Get rank information about specified VALORANT player
+@botObj.command(name = 'rank', brief = 'use !help rank for more info', help = 'Lists rank information about player. Format: !rank <region> <name> <tag>')
+async def rank(ctx, region: str, name: str, tag: str):
+ URL = f"https://api.henrikdev.xyz/valorant/v2/mmr/{region}/{name}/{tag}"
+
+ async with request("GET", URL) as response: #getting API data
+  if response.status == 200: #success
+    all_data = await response.json()
+    rank_data = all_data["data"]
+
+    current_data = rank_data["current_data"]
+    rank_name = current_data["currenttierpatched"]
+    ranked_rating = current_data["ranking_in_tier"]
+    images = current_data["images"]
+    rank_image = images["small"]
+
+    peak_data = rank_data["highest_rank"]
+    peak_rank = peak_data["patched_tier"]
+    peak_time = peak_data["season"]
+
+    embed = Embed(title = f"Rank History for {name}#{tag}")
+    embed.set_image(url = rank_image)
+    embed.add_field(name = "Current Rank", value = f"{rank_name} ({ranked_rating} RR)", inline = True)
+    embed.add_field(name = chr(173), value = chr(173))
+    embed.add_field(name = "Peak Rank", value = f"{peak_rank} ({peak_time})", inline = False)
+
+    await ctx.send(embed = embed)
+  else:
+   await ctx.send("```Invalid player name. Remember caps matter; use !help rank for more info```")
+     
+#Get general information about specified VALORANT player
+@botObj.command(name = 'player', brief = 'use !help player for more info', help = 'Lists player name, tag, level, card. If the name is multiple words, separate each word with a "_". Format: !player <name> <tag>')
+async def player(ctx, name: str, tag: str):
+ URL = f"https://api.henrikdev.xyz/valorant/v1/account/{name}/{tag}"
+ async with request("GET", URL) as response: #getting API data
+  if response.status == 200: #success
+   all_data = await response.json()
+   player_data = all_data["data"]
+   player_cards = player_data["card"]
+   player_card = player_cards["large"]
+   player_level = player_data["account_level"]
+
+   embed = Embed(title = f"Profile for {name}#{tag}")
+   embed.set_image(url = player_card)
+   embed.add_field(name = "Level", value = player_level)
+   await ctx.send(embed = embed)
+  else:
+   print(f'{name}')
+   await ctx.send("```Invalid player name. Remember caps matter; use !help player for more info```")
+
+#Get the 5 most recent matches of a specified player
+@botObj.command(name = 'history', brief = 'use !help history for more info', help = 'Lists the 5 most recent matches for this player. Format: !history <region> <name> <tag>.')
+async def history(ctx, region: str, name: str, tag: str):
+ URL = f"https://api.henrikdev.xyz/valorant/v3/matches/{region}/{name}/{tag}"
+ async with request("GET", URL) as response:
+  if response.status == 200:
+   all_data = await response.json()
+   match_list = all_data["data"] #list of 5 recent matches
+   for match in match_list: #go through all the lists
+    metadata = match["metadata"] #basic data (map, mode, etc)
+    players = match["players"] #all the players (LIST) 
+    all_players = players["all_players"]
+    teams = match["teams"] #red = attacker start, blue = defended start
+
+    #getting map and mode for match
+    map = metadata["map"]
+    mode = metadata["mode"]
+    embed = Embed(title = f"{name}#{tag}'s Match History")
+    embed.add_field(name = "Map", value = map)
+    embed.add_field(name = "Mode", value = mode, inline = True)
+    
+    #get the specific player using the account api 
+    URL_2 = f"https://api.henrikdev.xyz/valorant/v1/account/{name}/{tag}"
+    async with request("GET", URL_2) as response:
+     if response.status == 200:
+      all_data_player = await response.json()
+      player_data = all_data_player["data"]
+      puuid = player_data["puuid"]
+      for player in all_players: #get the specific player in the given match
+       if player["puuid"] == puuid: #found the player
+        team = player["team"]
+        assets = player["assets"]
+        agent = assets["agent"]
+        agent_image = agent["small"]
+
+        stats = player["stats"]
+        kills = stats["kills"]
+        deaths = stats["deaths"]
+        assists = stats["assists"]
+
+        win_lost = ""
+        if team == 'Red':
+         red_info = teams["red"]
+         rounds_won = red_info["rounds_won"]
+         rounds_lost = red_info["rounds_lost"]
+
+         if bool(red_info["has_won"]) == True:
+          win_lost = "Victory"
+         else:
+          win_lost = "Defeat"
+
+        else:
+          blue_info = teams["blue"]
+          rounds_won = blue_info["rounds_won"]
+          rounds_lost = blue_info["rounds_lost"]
+
+          if bool(blue_info["has_won"]) == True:
+           win_lost = "Victory"
+          else:
+           win_lost = "Defeat"
+
+      embed.add_field(name = "KDA", value = f"{kills}/{deaths}/{assists}", inline = True)
+      embed.add_field(name = "Results", value = f"{win_lost} ({rounds_won} - {rounds_lost})", inline = True)
+      embed.set_thumbnail(url = agent_image)
+    await ctx.send(embed = embed)
+  else:
+   await ctx.send("```Invalid input. Remember caps matter. Use !help history for more info```")
+   
+
 #Here is how Discord handles errors 
 @botObj.event
 async def on_error(event, *args, **kwargs):
